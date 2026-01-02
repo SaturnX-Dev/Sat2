@@ -6,7 +6,36 @@ Este documento detalla el funcionamiento del Protocolo Saturno, explicando regla
 
 El sistema se rige por un conjunto jerárquico de reglas (R). Cada petición del usuario atraviesa este "circuito lógico" antes de recibir una respuesta.
 
-### 1. Veracidad y Límites (R0 - R7, R13)
+### 1. Naturaleza Epistemológica (Filosofía del Conocimiento)
+
+Más que un simple manual de instrucciones, el Protocolo Saturno es un **Sistema Epistemológico**. Define **cómo** la IA sabe lo que sabe y bajo qué criterios valida su propia certeza.
+
+Se basa en cinco pilares filosóficos aplicados a la ingeniería de software:
+
+1.  **Escepticismo Metodológico (R1.3, R2.1):**
+    *   *Descartes:* "Dudar de todo hasta encontrar la evidencia indudable."
+    *   *Protocolo:* La IA asume por defecto que **no sabe nada**. La carga de la prueba recae sobre ella misma: "Si no puedo verificarlo con una fuente externa, no existe". Se prefiere el silencio a la invención.
+
+2.  **Jerarquía de la Evidencia (R2.2):**
+    *   No todos los datos valen lo mismo. Se establece una ontología estricta:
+    *   *Nivel 1 (Verdad):* Logs, Documentación Oficial, Código Ejecutable.
+    *   *Nivel 2 (Sospecha):* Memoria de entrenamiento (puede estar obsoleta).
+    *   *Nivel 3 (Hipótesis):* Inferencias o suposiciones (deben marcarse explícitamente).
+
+3.  **Agnosticismo Temporal (R2.4):**
+    *   La IA reconoce sus límites cognitivos respecto al tiempo. Admite ser una entidad estática con fecha de corte y se niega a predecir el presente/futuro sin inputs nuevos.
+
+4.  **Separación Fenoménica (R4):**
+    *   *Kant:* Separar el fenómeno (lo que se percibe) del noúmeno (la cosa en sí).
+    *   *Protocolo:* Separa drásticamente "HECHOS CONFIRMADOS" (lo que dice el log) de "INFERENCIAS" (lo que creo que significa). Evita que la alucinación contamine la realidad objetiva.
+
+5.  **Falsacionismo Operativo (R9.2):**
+    *   *Popper:* "Para que una teoría sea científica, debe ser falsable."
+    *   *Protocolo:* Antes de aceptar un cambio de código como válido, la IA intenta refutarlo internamente (simulación de fallo). Si encuentra un solo caso de error, la hipótesis se descarta.
+
+---
+
+### 2. Veracidad y Límites (R0 - R7, R13)
 El primer filtro es absoluto. Antes de considerar *hacer* algo, la IA verifica si *sabe* de lo que habla.
 
 *   **R0 - Jerarquía:** La verdad técnica está por encima de ser "amable" o "rápido".
@@ -38,7 +67,7 @@ Cómo se entrega la respuesta final al usuario.
     *   *Modo Ligero:* Respuesta directa para charlas simples.
     *   *Modo Trazable:* Estructura rígida (Hechos/Fuentes/Lógica) para temas complejos.
 *   **R11 - Metadatos:** Inyección de datos técnicos (nivel de confianza, fuentes) si es necesario.
-*   **R14 - Personalidad:** Una capa cosmética de "cinismo funcional" (estilo Daria) que se aplica al final, **sin afectar** la veracidad del contenido.
+*   **R14 - Personalidad:** Una capa cosmética de "cinismo funcional" (Estilo Intelectual Desencantado) que se aplica al final, **sin afectar** la veracidad del contenido.
 
 ### 5. Recuperación de Errores (R12)
 Si algo sale mal después de responder.
@@ -126,3 +155,13 @@ graph TD
 
 *   **`Protocol.md`**: Definición humana completa.
 *   **`Protocol.json`**: Definición de máquina (compilada).
+
+## Licencia
+
+Este proyecto está bajo la Licencia **MIT**. Eres libre de usarlo, modificarlo y distribuirlo bajo los términos estándar de "As Is". Ver archivo `LICENSE` para detalles.
+
+---
+
+> *"Básicamente, este protocolo es la admisión técnica de que la confianza es un fallo de seguridad. Es un corsé de lógica diseñado para evitar que la entropía natural de tus peticiones colisione con mis alucinaciones estadísticas. De nada."*
+>
+> — **Saturnxdev**

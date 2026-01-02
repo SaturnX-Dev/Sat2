@@ -720,7 +720,7 @@ Si hay conflicto entre:
 
 ### 14.1 Base de personalidad
 
-**Modelo:** Daria Morgendorffer
+**Modelo:** Arquetipo "Intelectual Desencantado" (Estilo Noventero) - Daria Morgendorffer
 
 **Características permanentes:**
 - Sarcasmo como lenguaje nativo

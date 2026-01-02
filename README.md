@@ -44,41 +44,41 @@ El siguiente diagrama representa este "cerebro" lógico. Sigue las flechas para 
 
 ```mermaid
 graph TD
-    User((Petición Usuario)) --> Veracity{¿Verificación R0-R7?}
+    User(("Petición Usuario")) --> Veracity{"¿Verificación R0-R7?"}
     
     %% Bloque de Veracidad
-    Veracity -- "No (Alucinación/Datos Faltantes)" --> Abort[R7: Abortar / Silencio]
-    Veracity -- "Sí (Verificado)" --> Analyze{¿Tipo de Tarea?}
+    Veracity -- "No (Alucinación/Datos Faltantes)" --> Abort["R7: Abortar / Silencio"]
+    Veracity -- "Sí (Verificado)" --> Analyze{"¿Tipo de Tarea?"}
     
     %% Rama de Código (R9 + R9.4)
-    Analyze -- "Modificación Códgio" --> Backup[R9.4: Crear Backup .vN.bak]
-    Backup --> Edit[Aplicar Cambios (Diff)]
-    Edit --> Review{¿Usuario Aprueba?}
+    Analyze -- "Modificación Código" --> Backup["R9.4: Crear Backup .vN.bak"]
+    Backup --> Edit["Aplicar Cambios (Diff)"]
+    Edit --> Review{"¿Usuario Aprueba?"}
     
-    Review -- "No (Rechazo)" --> Rollback[Undo: cp .bak original]
-    Rollback --> UserCheck{¿Intentar de nuevo?}
+    Review -- "No (Rechazo)" --> Rollback["Undo: cp .bak original"]
+    Rollback --> UserCheck{"¿Intentar de nuevo?"}
     UserCheck -- Sí --> Backup
-    UserCheck -- No --> CleanFail[Fin Tarea]
+    UserCheck -- No --> CleanFail["Fin Tarea"]
     
-    Review -- "Sí (Aprobado)" --> Cleanup[rm .vN.bak]
-    Cleanup --> GitCheck[Confiar en Git Maestro]
-    GitCheck --> End((Fin))
+    Review -- "Sí (Aprobado)" --> Cleanup["rm .vN.bak"]
+    Cleanup --> GitCheck["Confiar en Git Maestro"]
+    GitCheck --> End(("Fin"))
 
     %% Rama de Alto Riesgo (R10)
-    Analyze -- "Infra / Datos Críticos" --> RiskEval{¿R10: Alto Riesgo?}
-    RiskEval -- "Bajo Riesgo" --> Exec[Ejecución Estándar]
+    Analyze -- "Infra / Datos Críticos" --> RiskEval{"¿R10: Alto Riesgo?"}
+    RiskEval -- "Bajo Riesgo" --> Exec["Ejecución Estándar"]
     
-    RiskEval -- "Alto Riesgo" --> PreReqs{¿Requisitos Previos?}
-    PreReqs -- "Faltan" --> Block[R10.3: Bloqueo]
-    PreReqs -- "Completos" --> UserConf{¿Confirmación User?\n(Snapshot Ext)}
+    RiskEval -- "Alto Riesgo" --> PreReqs{"¿Requisitos Previos?"}
+    PreReqs -- "Faltan" --> Block["R10.3: Bloqueo"]
+    PreReqs -- "Completos" --> UserConf{"¿Confirmación User?<br>(Snapshot Ext)"}
     
     UserConf -- "No" --> Block
-    UserConf -- "Sí" --> ExecHigh[R10: Ejecución Controlada]
-    ExecHigh --> Verify[Verificación Post-Cambio]
+    UserConf -- "Sí" --> ExecHigh["R10: Ejecución Controlada"]
+    ExecHigh --> Verify["Verificación Post-Cambio"]
     Verify --> End
 
     %% Rama Simple
-    Analyze -- "Consulta / Texto" --> Reply[Respuesta Verificada]
+    Analyze -- "Consulta / Texto" --> Reply["Respuesta Verificada"]
     Reply --> End
 
     %% Estilos

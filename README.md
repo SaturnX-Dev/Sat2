@@ -44,20 +44,50 @@ El siguiente diagrama representa este "cerebro" lógico. Sigue las flechas para 
 
 ```mermaid
 graph TD
-    A["Petición Usuario"] --> B{"¿Es Verdad?<br>(R0-R7)"}
-    B -- No --> C["Detener / Abortar"]
-    B -- Sí --> D{"¿Es Modificación<br>de Código?"}
-    D -- Sí --> E["Backup Local<br>(.vN.bak)"]
-    E --> F{"¿Alto Riesgo?<br>(R10)"}
-    D -- No --> F
-    F -- Sí --> G["Solicitar Confirmación<br>(Snapshot Ext)"]
-    F -- No --> H["Ejecución Segura"]
-    G --> H
+    User((Petición Usuario)) --> Veracity{¿Verificación R0-R7?}
     
-    style C fill:#ff3333,stroke:#333,stroke-width:2px,color:white
-    style H fill:#00cc66,stroke:#333,stroke-width:2px,color:black
-    style E fill:#9933ff,stroke:#333,stroke-width:2px,color:white
-    style G fill:#ff9900,stroke:#333,stroke-width:2px,color:black
+    %% Bloque de Veracidad
+    Veracity -- "No (Alucinación/Datos Faltantes)" --> Abort[R7: Abortar / Silencio]
+    Veracity -- "Sí (Verificado)" --> Analyze{¿Tipo de Tarea?}
+    
+    %% Rama de Código (R9 + R9.4)
+    Analyze -- "Modificación Códgio" --> Backup[R9.4: Crear Backup .vN.bak]
+    Backup --> Edit[Aplicar Cambios (Diff)]
+    Edit --> Review{¿Usuario Aprueba?}
+    
+    Review -- "No (Rechazo)" --> Rollback[Undo: cp .bak original]
+    Rollback --> UserCheck{¿Intentar de nuevo?}
+    UserCheck -- Sí --> Backup
+    UserCheck -- No --> CleanFail[Fin Tarea]
+    
+    Review -- "Sí (Aprobado)" --> Cleanup[rm .vN.bak]
+    Cleanup --> GitCheck[Confiar en Git Maestro]
+    GitCheck --> End((Fin))
+
+    %% Rama de Alto Riesgo (R10)
+    Analyze -- "Infra / Datos Críticos" --> RiskEval{¿R10: Alto Riesgo?}
+    RiskEval -- "Bajo Riesgo" --> Exec[Ejecución Estándar]
+    
+    RiskEval -- "Alto Riesgo" --> PreReqs{¿Requisitos Previos?}
+    PreReqs -- "Faltan" --> Block[R10.3: Bloqueo]
+    PreReqs -- "Completos" --> UserConf{¿Confirmación User?\n(Snapshot Ext)}
+    
+    UserConf -- "No" --> Block
+    UserConf -- "Sí" --> ExecHigh[R10: Ejecución Controlada]
+    ExecHigh --> Verify[Verificación Post-Cambio]
+    Verify --> End
+
+    %% Rama Simple
+    Analyze -- "Consulta / Texto" --> Reply[Respuesta Verificada]
+    Reply --> End
+
+    %% Estilos
+    style Abort fill:#ff3333,color:white,stroke:#333
+    style Block fill:#ff3333,color:white,stroke:#333
+    style Backup fill:#9933ff,color:white,stroke:#333
+    style Rollback fill:#ff9900,color:black,stroke:#333
+    style UserConf fill:#ffcc00,color:black,stroke:#333
+    style ExecHigh fill:#00cc66,color:black,stroke:#333
 ```
 ---
 

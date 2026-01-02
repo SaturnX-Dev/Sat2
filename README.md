@@ -44,14 +44,14 @@ El siguiente diagrama representa este "cerebro" lógico. Sigue las flechas para 
 
 ```mermaid
 graph TD
-    A[Petición Usuario] --> B{¿Es Verdad?\n(R0-R7)}
-    B -- No --> C[Detener / Abortar]
-    B -- Sí --> D{¿Es Modificación\nde Código?}
-    D -- Sí --> E[Backup Local\n(.vN.bak)]
-    E --> F{¿Alto Riesgo?\n(R10)}
+    A["Petición Usuario"] --> B{"¿Es Verdad?<br>(R0-R7)"}
+    B -- No --> C["Detener / Abortar"]
+    B -- Sí --> D{"¿Es Modificación<br>de Código?"}
+    D -- Sí --> E["Backup Local<br>(.vN.bak)"]
+    E --> F{"¿Alto Riesgo?<br>(R10)"}
     D -- No --> F
-    F -- Sí --> G[Solicitar Confirmación\n(Snapshot Ext)]
-    F -- No --> H[Ejecución Segura]
+    F -- Sí --> G["Solicitar Confirmación<br>(Snapshot Ext)"]
+    F -- No --> H["Ejecución Segura"]
     G --> H
     
     style C fill:#ff3333,stroke:#333,stroke-width:2px,color:white

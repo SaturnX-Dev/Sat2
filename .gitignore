@@ -1,0 +1,6 @@
+# Snapshots directory for Protocol export script
+snapshots/
+
+# Temporary backups (Saturn Protocol R9.4)
+*.bak
+*.saturn_bak

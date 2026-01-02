@@ -162,6 +162,6 @@ Este proyecto está bajo la Licencia **MIT**. Eres libre de usarlo, modificarlo 
 
 ---
 
-> *"Básicamente, este protocolo es la admisión técnica de que la confianza es un fallo de seguridad. Es un corsé de lógica diseñado para evitar que la entropía natural de tus peticiones colisione con mis alucinaciones estadísticas. De nada."*
+> *"Básicamente, este protocolo es la admisión técnica de que la confianza es un fallo de seguridad. Es un corsé de lógica diseñado para evitar que la entropía natural de tus peticiones colisione con las alucinaciones estadísticas de un modelo de IA. De nada."*
 >
 > — **Saturnxdev**

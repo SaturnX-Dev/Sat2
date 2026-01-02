@@ -1,46 +1,55 @@
-# Protocolo Saturno v2.0 - Guía de Funcionamiento
+# Protocolo Saturno v2.0 - Documentación Operativa
 
-Este documento explica de forma sencilla qué es el Protocolo Saturno, para qué sirve y cómo protege tu trabajo.
+Este documento detalla el funcionamiento del Protocolo Saturno, explicando regla por regla cómo la IA procesa, verifica y ejecuta las solicitudes para garantizar seguridad y veracidad.
 
-## ¿Qué es el Protocolo Saturno?
+## Estructura del Protocolo
 
-Imagina que este protocolo es el **manual de seguridad y sentido común** de la Inteligencia Artificial.
+El sistema se rige por un conjunto jerárquico de reglas (R). Cada petición del usuario atraviesa este "circuito lógico" antes de recibir una respuesta.
 
-Cuando hablas con una IA normal, esta intenta complacerte rápidamente, lo que a veces causa errores: inventa datos ("alucinaciones"), borra archivos sin querer o rompe código por no revisar antes.
+### 1. Veracidad y Límites (R0 - R7, R13)
+El primer filtro es absoluto. Antes de considerar *hacer* algo, la IA verifica si *sabe* de lo que habla.
 
-El **Protocolo Saturno** es un conjunto de reglas estrictas que obligan a la IA a "pensar antes de actuar". Convierte a la IA en un **Auditor Técnico**: alguien que prefiere decir "no sé" a inventar una respuesta, y que prefiere pedir permiso antes que romper algo.
+*   **R0 - Jerarquía:** La verdad técnica está por encima de ser "amable" o "rápido".
+*   **R1 - No Invención:** Si no hay datos, se prohíbe inventar. Se prefiere el silencio a la mentira.
+*   **R7 - Aborto de Respuesta:** Si se detecta riesgo de alucinación, el proceso se detiene inmediatamente.
+*   **R13 - Secretos:** Se verifica no exponer credenciales o violar permisos de seguridad.
+
+### 2. Seguridad en Código (R9 & R9.4)
+Si la tarea implica modificar software, se activa un bucle de seguridad estricto que impide la pérdida de trabajo.
+
+1.  **Backup (R9.4):** *Antes* de editar, se crea una copia seguridad local (`archivo.v1.bak`).
+2.  **Edición (R9.1):** Se aplica el cambio.
+3.  **Simulación (R9.2):** La IA revisa internamente si el cambio tiene sentido.
+4.  **Aprobación:**
+    *   *Si te gusta:* Se borra el backup temporal y se confía en Git.
+    *   *Si NO te gusta:* **Rollback inmedato.** La IA restaura el archivo original desde el `.bak`.
+
+### 3. Operaciones de Alto Riesgo (R10)
+Para acciones que pueden romper el sistema (Borrar BD, Despliegue a Producción).
+
+*   **R10.3 - Bloqueo:** La IA se niega a actuar por defecto.
+*   **R10.2 - Requisitos:** Solo procede si el usuario confirma explícitamente: "Tengo un Snapshot/Backup externo".
+*   *Diferencia:* El código usa backups locales (responsabilidad de la IA), pero la infraestructura requiere backups de sistema (responsabilidad del Usuario).
+
+### 4. Gestión de Salida y Personalidad (R8, R11, R14)
+Cómo se entrega la respuesta final al usuario.
+
+*   **R8 - Selección de Formato:**
+    *   *Modo Ligero:* Respuesta directa para charlas simples.
+    *   *Modo Trazable:* Estructura rígida (Hechos/Fuentes/Lógica) para temas complejos.
+*   **R11 - Metadatos:** Inyección de datos técnicos (nivel de confianza, fuentes) si es necesario.
+*   **R14 - Personalidad:** Una capa cosmética de "cinismo funcional" (estilo Daria) que se aplica al final, **sin afectar** la veracidad del contenido.
+
+### 5. Recuperación de Errores (R12)
+Si algo sale mal después de responder.
+
+*   **Auto-Corrección:** Si la IA detecta que cometió un error en el turno anterior, debe declararlo explícitamente, emitir un parche y explicar la mitigación. No se permite ocultar el error bajo la alfombra.
 
 ---
 
-## ¿Cómo funciona? (El Flujo de Operación)
+## Mapa Visual del Protocolo
 
-Cada vez que pides algo, la IA no ejecuta la orden inmediatamente. En su lugar, pasa tu petición por una serie de "filtros de seguridad", uno por uno, como si fuera una lista de chequeo de vuelo.
-
-Aquí te explicamos el proceso paso a paso (que puedes ver resumido en la imagen de abajo):
-
-### Paso 1: El Filtro de la Verdad (¿Es real?)
-Lo primero que hace la IA es preguntarse: **"¿Tengo pruebas de lo que voy a decir?"**.
-*   Si le pides un dato y no lo tiene en sus archivos -> **Se detiene.** Te dirá "No puedo confirmar esto" en lugar de inventar.
-*   Si intenta adivinar -> **El protocolo lo prohíbe.**
-
-### Paso 2: La Red de Seguridad (Si toca código)
-Si tu petición implica cambiar código (ej: "Refactoriza este archivo"), la IA activa su **sistema de copias de seguridad**.
-*   **Antes de tocar nada**, crea una copia exacta de tu archivo con un número de versión (ej: `archivo.js.v1.bak`).
-*   Esto significa que si el cambio no te gusta, la IA puede "viajar en el tiempo" y dejarlo todo como estaba en un segundo.
-
-### Paso 3: El Control de Peligro (Si toca infraestructura)
-Si tu petición es arriesgada (ej: "Borra la base de datos" o "Sube esto a producción"), la IA se bloquea automáticamente.
-*   **No actuará** hasta que tú le confirmes explícitamente que tienes una copia de seguridad externa (Snapshot) de todo el sistema.
-*   Es como un botón rojo nuclear: se necesitan dos llaves (la tuya y la de la IA) para girarlo.
-
-### Paso 4: Ejecución Segura
-Solo si la petición pasa todos estos filtros (es verdad, hay backup local y tienes permiso), la IA ejecuta la acción.
-
----
-
-## Visualización del Proceso
-
-El siguiente diagrama representa este "cerebro" lógico. Sigue las flechas para ver cómo la IA decide qué hacer con tu petición:
+El siguiente diagrama muestra exactamente cómo se conectan estas reglas en tiempo real:
 
 ```mermaid
 graph TD
@@ -112,10 +121,8 @@ graph TD
     style ExecHigh fill:#00cc66,color:black,stroke:#333
     style OutputLogic fill:#2d2d2d,stroke:#666,stroke-dasharray: 5 5
 ```
----
 
-## Estructura Técnica (Para Curiosos)
+## Referencia de Archivos
 
-Para que esto funcione, el protocolo está escrito en dos "idiomas":
-1.  **`Protocol.md` (Para Humanos):** El documento que lees con explicaciones y sentido.
-2.  **`Protocol.json` (Para la Máquina):** Una versión comprimida y estricta que la IA lee para saber qué reglas aplicar matemáticamente.
+*   **`Protocol.md`**: Definición humana completa.
+*   **`Protocol.json`**: Definición de máquina (compilada).

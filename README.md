@@ -46,48 +46,71 @@ El siguiente diagrama representa este "cerebro" lógico. Sigue las flechas para 
 graph TD
     User(("Petición Usuario")) --> Veracity{"¿Verificación R0-R7?"}
     
-    %% Bloque de Veracidad
+    %% BLOCK 1: VERACIDAD & LÍMITES
     Veracity -- "No (Alucinación/Datos Faltantes)" --> Abort["R7: Abortar / Silencio"]
-    Veracity -- "Sí (Verificado)" --> Analyze{"¿Tipo de Tarea?"}
-    
-    %% Rama de Código (R9 + R9.4)
-    Analyze -- "Modificación Código" --> Backup["R9.4: Crear Backup .vN.bak"]
-    Backup --> Edit["Aplicar Cambios (Diff)"]
-    Edit --> Review{"¿Usuario Aprueba?"}
-    
-    Review -- "No (Rechazo)" --> Rollback["Undo: cp .bak original"]
-    Rollback --> UserCheck{"¿Intentar de nuevo?"}
-    UserCheck -- Sí --> Backup
-    UserCheck -- No --> CleanFail["Fin Tarea"]
-    
-    Review -- "Sí (Aprobado)" --> Cleanup["rm .vN.bak"]
-    Cleanup --> GitCheck["Confiar en Git Maestro"]
-    GitCheck --> End(("Fin"))
+    Veracity -- "Sí (Verificado)" --> Secrets{"¿Check R13: Secretos/Permisos?"}
+    Secrets -- "Fallo (Secrets/Perms)" --> Abort
+    Secrets -- "OK" --> Analyze{"¿Tipo de Tarea?"}
 
-    %% Rama de Alto Riesgo (R10)
-    Analyze -- "Infra / Datos Críticos" --> RiskEval{"¿R10: Alto Riesgo?"}
-    RiskEval -- "Bajo Riesgo" --> Exec["Ejecución Estándar"]
+    %% BLOCK 2: CÓDIGO (R9)
+    Analyze -- "Modificación Código" --> Backup["R9.4: Backup .vN.bak"]
+    Backup --> Edit["Aplicar Cambios (Diff R9.1)"]
+    Edit --> Sim{"¿Simulación R9.2 OK?"}
+    Sim -- "Fallo" --> Abort
+    Sim -- "OK" --> UserRev{"¿Usuario Aprueba?"}
     
+    UserRev -- "No (Rechazo)" --> Rollback["Undo: cp .bak original"]
+    Rollback --> Retry{"¿Reintentar?"}
+    Retry -- "Sí" --> Backup
+    Retry -- "No" --> CleanFail["Fin Tarea"]
+    
+    UserRev -- "Sí (Aprobado)" --> Cleanup["rm .vN.bak"]
+    Cleanup --> Commit["Confiar en Git (R9.4)"]
+    Commit --> OutputLogic
+
+    %% BLOCK 3: ALTO RIESGO (R10)
+    Analyze -- "Infra / Datos Críticos" --> RiskEval{"¿R10: Alto Riesgo?"}
+    RiskEval -- "Bajo Riesgo" --> ExecSimple["Ejecución Estándar"]
     RiskEval -- "Alto Riesgo" --> PreReqs{"¿Requisitos Previos?"}
-    PreReqs -- "Faltan" --> Block["R10.3: Bloqueo"]
+    
+    PreReqs -- "Falta (Snapshot System)" --> Block["R10.3: Bloqueo"]
     PreReqs -- "Completos" --> UserConf{"¿Confirmación User?<br>(Snapshot Ext)"}
     
     UserConf -- "No" --> Block
     UserConf -- "Sí" --> ExecHigh["R10: Ejecución Controlada"]
     ExecHigh --> Verify["Verificación Post-Cambio"]
-    Verify --> End
+    Verify --> OutputLogic
+    ExecSimple --> OutputLogic
 
-    %% Rama Simple
-    Analyze -- "Consulta / Texto" --> Reply["Respuesta Verificada"]
-    Reply --> End
+    %% BLOCK 4: CONSULTA SIMPLE
+    Analyze -- "Consulta / Texto" --> OutputLogic
 
-    %% Estilos
+    %% BLOCK 5: SALIDA & ERROR (R8, R11, R12, R14)
+    subgraph OutputLogic [Gestión de Salida]
+        Format{"¿Selección Formato R8?"}
+        Format -- "Simple" --> ModeL["Modo Ligero R8.1"]
+        Format -- "Complejo/Técnico" --> ModeT["Modo Trazable R8.2"]
+        
+        ModeL --> Persona["Aplicar Tono R14 (Cosmético)"]
+        ModeT --> Meta["Añadir Metadatos R11"]
+        Meta --> Persona
+        
+        Persona --> FinalOut["/Respuesta Final/"]
+    end
+
+    FinalOut --> ErrorCheck{"¿Error Detectado R12?"}
+    ErrorCheck -- "Sí" --> Patch["R12: Protocolo Corrección"]
+    Patch --> Analyze
+    ErrorCheck -- "No" --> End(("Fin"))
+
+    %% ESTILOS
     style Abort fill:#ff3333,color:white,stroke:#333
     style Block fill:#ff3333,color:white,stroke:#333
     style Backup fill:#9933ff,color:white,stroke:#333
     style Rollback fill:#ff9900,color:black,stroke:#333
     style UserConf fill:#ffcc00,color:black,stroke:#333
     style ExecHigh fill:#00cc66,color:black,stroke:#333
+    style OutputLogic fill:#2d2d2d,stroke:#666,stroke-dasharray: 5 5
 ```
 ---
 

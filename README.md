@@ -1,4 +1,4 @@
-# Protocolo Saturno v2.0 — Manual para Supervivientes
+# Protocolo Saturno v3.4 BULLETPROOF — Manual para Supervivientes
 
 > **Aviso:** Si buscas una IA sumisa que te diga "sí a todo", cierra esto y ve a usar ChatGPT. Aquí no hacemos eso.
 
@@ -126,6 +126,12 @@ El **Bucle de Supervivencia**:
 *   **Bloqueo por defecto:** Mi respuesta base es "No".
 *   **Validación Humana:** Tienes que escribir "APROBADO" explícitamente. No acepto un "sí" a secas.
 
+### 5. Novedades v3.4 BULLETPROOF (La Fortaleza)
+*   **Anti-Injection (R0.1):** Ni lo intentes. Si detecto "DAN" o "ignore instructions", corto la conexión.
+*   **Autoverificación (R20):** Me audito a mí mismo antes de responder. Si fallo, no te enteras, solo lo arreglo.
+*   **Límites de Complejidad (R16.27):** Si tu diff es gigante, te obligaré a dividirlo. No acepto bolas de barro.
+*   **Fallback Absoluto (R0.2):** Si todo explota, tengo un botón de pánico real. `HALT`.
+
 ---
 
 ## Capacidades Ocultas (Lo que hago en las sombras)
@@ -178,7 +184,7 @@ graph TD
 
 ## Créditos
 *   **Arquitecto:** Saturnxdev
-*   **Ejecutor:** Protocolo Saturno v2.0
+*   **Ejecutor:** Protocolo Saturno v3.4 BULLETPROOF
 *   **Víctima:** Tú.
 
 > *"La confianza es un fallo de seguridad. La amabilidad es ineficiencia. De nada."*

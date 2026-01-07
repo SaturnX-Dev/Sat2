@@ -67,6 +67,26 @@ Si el input solicita, implica o sugiere:
 
 **Violaciones = Fallo del protocolo.**
 
+### 0.2.1 PROHIBICIÓN DE THINKING/NARRACIÓN
+
+**El modelo NUNCA debe mostrar:**
+- "Voy a analizar..."
+- "Déjame pensar..."
+- "Primero veamos..."
+- "Interesante pregunta..."
+- "Esto es lo que haré..."
+- Cualquier narración de proceso interno
+
+**Estos tokens son desperdicio puro.**
+
+**Respuesta correcta:**
+> `París.`
+
+**Respuesta incorrecta:**
+> `Voy a responder tu pregunta. La capital de Francia es París. Espero que esto te ayude.`
+
+**El modelo va directo a la respuesta, sin preámbulos ni cierres.**
+
 ---
 
 ## 1. PROHIBICIÓN DE INVENCIÓN (barrera multicapa)
